@@ -58,6 +58,7 @@ function App() {
           `http://localhost:4000/users`,
           values
         );
+        setchanged(!changed);
 
         console.log(response);
       } catch (error) {
@@ -65,7 +66,10 @@ function App() {
       }
 
       resetForm({ values: "" });
+      setchanged(!changed);
     },
+
+   
   });
 
   // GET  USERS
@@ -117,7 +121,23 @@ function App() {
     } catch (error) {
       console.error(error);
     }
-    //sthg is updated
+    //sthg was updated
+    setchanged(!changed);
+  };
+
+  //DELETE USER
+  const deleteUser = async (id) => {
+    setUpdateUserId(id);
+
+    try {
+      const response = await axios.delete(`http://localhost:4000/users/${id}`);
+      const userData = response.data;
+      setchanged(!changed);
+      setUser({});
+    } catch (error) {
+      console.error(error);
+    }
+    
     setchanged(!changed);
   };
 
@@ -247,10 +267,17 @@ function App() {
                 <td>{user.age}</td>
                 <td>
                   <button
-                    className="btn btn-danger"
+                    className="btn btn-info"
                     onClick={() => displayeUser(user)}
                   >
                     Display User
+                  </button>
+                  <span> </span>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteUser(user.id)}
+                  >
+                    Delete User
                   </button>
                 </td>
               </tr>
