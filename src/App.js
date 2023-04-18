@@ -1,12 +1,13 @@
 import * as Yup from "yup";
 import axios from "axios";
-import { useFormik } from "formik";
+import { useFormik, useFormikContext } from "formik";
 import { useState, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import "./index.css";
 import "./App.css";
 function App() {
   const professions = ["Developer", "Designer", "Other"];
+
   const [user, setUser] = useState({
     id: "",
     name: "",
@@ -68,8 +69,6 @@ function App() {
       resetForm({ values: "" });
       setchanged(!changed);
     },
-
-   
   });
 
   // GET  USERS
@@ -133,11 +132,11 @@ function App() {
       const response = await axios.delete(`http://localhost:4000/users/${id}`);
       const userData = response.data;
       setchanged(!changed);
-      setUser({});
     } catch (error) {
       console.error(error);
     }
-    
+
+    formik.resetForm();
     setchanged(!changed);
   };
 
